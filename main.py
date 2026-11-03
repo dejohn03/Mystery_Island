@@ -1,11 +1,44 @@
+def main_menu():
+    print(f"""
+{"=" * 30}
+ WELCOME TO  MYSTERY_ISLAND
+{"=" * 30}
+    
+1. Explore current location
+2. travel tgo another location
+3. View inventory
+4. View island map
+5. View player status
+6. Quit adventure                                                  
+""")
+    
+def run_game():
+    while True:
+        print("Welcome to Mystery Island")
+        players_name = input("Enter your user name: ")
+        print(f"""
+Welcome {players_name}
+""")
+        players_details = {
+        "energy": 5,
+        "location": "beach",
+        "inventory": []
+        }
 
-print("=" * 30)
-print(" ","WELCOME TO  MYSTERY_ISLAND")
-print("=" * 30)
+        for key, value in players_details.items():
+            print(f"{key} = {value}")
 
-player = input("Enter your user name: ")
+        main_menu()
 
-print("Instruction: ")
-print(f"Hello {player},You wake up on Mystery Island after a storm. The lighthouse is dark, the bridge is locked, and a rescue boat will arrive only if you restore the beacon ")
+        players_choice = input("Enter user choice: ").strip()
+
+        
+
+        if players_choice == "6":
+            print("Good bye...")
+            break
 
 
+
+if __name__ == "__main__":
+    run_game()
