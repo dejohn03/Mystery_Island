@@ -1,3 +1,4 @@
+
 import random
 
 ISLAND_MAP = {
@@ -12,27 +13,49 @@ ISLAND_MAP = {
           The ground is covered with roots, fallen branches, and wet leaves.
           As you walk deeper into the Jungle, you notice that something is watching you. You hear birds calling, 
           monkeys jumping between branches, and strange noises coming from the bushe""",
-        "items": ["wild fruits", "hidden wooden box", "sharp stone", "snakes","hiddden pits"],
+        "items": ["wild fruits", "hidden wooden box", "sharp stone", "snakes","hiddden pits","medicinal leaves","strong vines"], 
         "connections": ["beach", "cave","oldbridge" ]
     },
     "cave": {
-        "description": "A dark, echoey cavern with glowing mushrooms.",
-        "items": ["glowing mushroom", "old coin", "rope"],
-        "connections": ["beach", "lighthouse", "oldbridge"]
-},
-    "oldbridge": {
-        "description": "A breezy, steep peak overlooking the entire island.",
-        "items": ["crystal", "wild berries", "lantern"],
+        "description": """The entrance is narrow, and cold air blows from inside. Water drips from the ceiling, creating strange echoes throughout the cave.
+        You switch on your light and carefully step inside.
+        As you explore deeper, you discover ancient drawings on the walls,
+        broken wooden boxes, mysterious symbols, and an old stone door..""",
+        "items": ["glowing crystal", "hidden treasure chest", 
+        "climblin rope", "ancient stone tablet", "old lantern","ancient key"],
+        "cave dangers":["deep holes", "falling", "darkness"],
+
+        "connections": ["beach", "lighthouse", "old bridge"],
+    },    
+
+    "old bridge": {
+        "description": """The bridge looks very weak. Some of its wooden planks are broken,
+        and its ropes are old and damaged. Far below, a river flows between enormous rocks.
+        Strong winds blow across the valley, 
+        making the bridge swing from side to side.
+
+        You look across the bridge and notice something important: 
+        the other side leads towards a mountain path, and beyond that mountain stands the Lighthouse.
+
+        You must find a way to repair or safely cross the bridge before continuing your journey.""",
+        "items": ["Wooden planks", "Iron nails", "Hammer","Spare rope","Metal hook","Old map"],
+        "old bridge":["broken planks", "weak ropes", "strong winds", "deep valley"],
         "connections": ["jungle", "lighthouse", "oldbridge"]
     },
     "lighthouse":{
-        "description": "A building that contains beacon(a powerful light)",
-        "items": ["beacon mechanism", "a recscus signal", "am old logbook"],
+        "description": """After successfully crossing the Old Bridge, you follow a rocky mountain
+          path until you finally see an enormous lighthouse standing on the edge of the island.
+        The lighthouse is very old. Its white paint is peeling, its windows are broken, 
+        and its entrance is covered with dust and cobwebs.
+        You are excited because this is the place where the rescue boat is supposed to find you.
+        As you approach the lighthouse, you notice that its main door is locked. 
+        You must explore the building,
+        find useful equipment, and activate the lighthouse signal to attract the rescue boat.""",
+        "items": ["Lighthouse key", "a recscus signal", "Instruction notebook"],
+        "lighthouse dangers" : ["broken staircase", "electical", "locked control room", "power failure"],
         "connections": ["oldbridge", "beach"]
-    }
+    },
 }
-
-
 def main_menu():
     print(f"""
 {"=" * 30}
