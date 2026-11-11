@@ -1,38 +1,85 @@
 # Mystery_Island
 
-import random
+## About the Game
 
-ISLAND_MAP = {
-    "beach":{
-        "description": """The ocean stretches endlessly before you. Tall palm trees sway in the wind, while strange birds fly above them. "
-        Pieces of your broken ship are scattered along the beach.s""",
-        "items": ["shipwreck", "coconut", "Rope","Rusty key","wooden chest","palm trees"],
-        "connections": ["jungle", "cave","lighthouse"], 
-    },
-    "jungle":{
-        "description": """The sunlight struggles to pass through the thick leaves.
-          The ground is covered with roots, fallen branches, and wet leaves.
-          As you walk deeper into the Jungle, you notice that something is watching you. You hear birds calling, 
-          monkeys jumping between branches, and strange noises coming from the bushe""",
-        "items": ["wild fruits", "hidden wooden box", "sharp stone", "snakes","hiddden pits","medicinal leaves","strong vines", ],
-        "connections": ["beach", "cave","oldbridge" ]
-    },
-    "cave": {
-        "description": """The entrance is narrow, and cold air blows from inside. Water drips from the ceiling, creating strange echoes throughout the cave.
+Mystery Island is a text-based adventure game built with Python.
 
-        You switch on your light and carefully step inside.
-        As you explore deeper, you discover ancient drawings on the walls,
-        broken wooden boxes, mysterious symbols, and an old stone door..""",
-        "items": ["glowing crystal", "hidden treasure chest", "climblin rope", "ancient stone tablet", "old lantern","ancient key"],
-        "connections": ["beach", "lighthouse", "oldbridge"]
-},
-    "oldbridge": {
-        "description": "A breezy, steep peak overlooking the entire island.",
-        "items": ["crystal", "wild berries", "lantern"],
-        "cave dangers"["deep holes", "falling", "ba]
-        "connections": ["jungle", "lighthouse", "oldbridge"]
-    },
-    "lighthouse":{
-        "description": "A building that contains beacon(a powerful light)",
-        "items": ["beacon mechanism", "a recscus signal", "am old logbook"],
-        "connections": ["oldbridge", "beach"]
+The player survives a shipwreck and becomes stranded on a mysterious island.
+
+To escape, the player must explore five locations, collect useful items, solve puzzles, overcome obstacles, and activate an old lighthouse to attract a rescue boat.
+
+## Objectives
+
+- Explore the island.
+- Collect useful items.
+- Manage your energy.
+- Discover hidden clues.
+- Solve puzzles.
+- Overcome dangerous obstacles.
+- Reach the lighthouse.
+- Activate the rescue signal.
+
+## Features
+
+- Interactive command-line gameplay.
+- Multiple locations to explore.
+- Inventory management.
+- Item collection.
+- Energy management.
+- Movement restrictions.
+- Random events.
+- Puzzles and challenges.
+- Win and lose conditions.
+
+## Technologies
+
+- Python
+- Git
+- GitHub
+- Unittest (for testing)
+
+## Technologies
+
+- Python
+- Git
+- GitHub
+- Unittest (for testing)
+
+## Installation
+
+1. Clone the repository:
+
+   git clone YOUR_GITHUB_REPOSITORY_URL
+
+2. Enter the project folder:
+
+   cd Mystery_Island
+
+3. Run the game:
+
+   python game.py
+
+   ## How to Play
+
+1. Start the game.
+2. Enter your player name.
+3. Choose an action from the menu.
+4. Explore different locations.
+5. Collect useful items.
+6. Solve puzzles and overcome obstacles.
+7. Reach the lighthouse and escape the island.
+
+## Running Tests
+
+Run the following command:
+
+python -m unittest discover -s tests -v
+
+
+## Author
+
+Created by: Your Name
+
+Project: Mystery Island
+
+Language: Python
