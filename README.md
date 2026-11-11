@@ -78,7 +78,7 @@ python -m unittest discover -s tests -v
 
 ## Author
 
-Created by: Your Name
+Created by: DEBORAH JOHN LADI
 
 Project: Mystery Island
 
