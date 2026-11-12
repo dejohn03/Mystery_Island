@@ -6,7 +6,7 @@ INITIAL_ISLAND_MAP = {
         "name": "beach",
         "info": """A sandy shore strewn with shipwreck debris.You wake up on a beautiful but mysterious island after a terrible storm destroys your ship. "
         "You find yourself lying on soft white sand, with waves gently washing against the shore""",
-        "items": ["Rope","Rusty key", "wooden chest"]
+        "items": ["Rope"]
     },
     "jungle": {
         "id": 2,
