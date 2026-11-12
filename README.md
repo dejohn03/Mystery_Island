@@ -38,13 +38,6 @@ To escape, the player must explore five locations, collect useful items, solve p
 - GitHub
 - Unittest (for testing)
 
-## Technologies
-
-- Python
-- Git
-- GitHub
-- Unittest (for testing)
-
 ## Installation
 
 1. Clone the repository:
