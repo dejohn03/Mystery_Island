@@ -1,142 +1,212 @@
+import copy
 
-import random
-
-ISLAND_MAP = {
-    "beach":{
-        "description": """The ocean stretches endlessly before you. Tall palm trees sway in the wind, while strange birds fly above them. "
-        Pieces of your broken ship are scattered along the beach.s""",
-        "items": ["shipwreck", "coconut", "Rope","Rusty key","wooden chest","palm trees"],
-        "connections": ["jungle", "cave","lighthouse"], 
+INITIAL_ISLAND_MAP = {
+    "beach": {
+        "id": 1,
+        "name": "beach",
+        "info": """A sandy shore strewn with shipwreck debris.You wake up on a beautiful but mysterious island after a terrible storm destroys your ship. "
+        "You find yourself lying on soft white sand, with waves gently washing against the shore""",
+        "items": ["Rope","Rusty key", "wooden chest"]
     },
-    "jungle":{
-        "description": """The sunlight struggles to pass through the thick leaves.
-          The ground is covered with roots, fallen branches, and wet leaves.
-          As you walk deeper into the Jungle, you notice that something is watching you. You hear birds calling, 
-          monkeys jumping between branches, and strange noises coming from the bushe""",
-        "items": ["wild fruits", "hidden wooden box", "sharp stone", "snakes","hiddden pits","medicinal leaves","strong vines"], 
-        "connections": ["beach", "cave","oldbridge" ]
+    "jungle": {
+        "id": 2,
+        "name": "jungle",
+        "info": "A dense, humid jungle filled with mysterious sounds.",
+        "items": ["snakes", "hidden pit","fruils"]
     },
     "cave": {
-        "description": """The entrance is narrow, and cold air blows from inside. Water drips from the ceiling, creating strange echoes throughout the cave.
-        You switch on your light and carefully step inside.
-        As you explore deeper, you discover ancient drawings on the walls,
-        broken wooden boxes, mysterious symbols, and an old stone door..""",
-        "items": ["glowing crystal", "hidden treasure chest", 
-        "climblin rope", "ancient stone tablet", "old lantern","ancient key"],
-        "cave dangers":["deep holes", "falling", "darkness"],
-
-        "connections": ["beach", "lighthouse", "old bridge"],
-    },    
-
-    "old bridge": {
-        "description": """The bridge looks very weak. Some of its wooden planks are broken,
-        and its ropes are old and damaged. Far below, a river flows between enormous rocks.
-        Strong winds blow across the valley, 
-        making the bridge swing from side to side.
-
-        You look across the bridge and notice something important: 
-        the other side leads towards a mountain path, and beyond that mountain stands the Lighthouse.
-
-        You must find a way to repair or safely cross the bridge before continuing your journey.""",
-        "items": ["Wooden planks", "Iron nails", "Hammer","Spare rope","Metal hook","Old map"],
-        "old bridge":["broken planks", "weak ropes", "strong winds", "deep valley"],
-        "connections": ["jungle", "lighthouse", "oldbridge"]
+        "id": 3,
+        "name": "cave",
+        "info": """A dark, damp cavern.The Cave is the third location on Mystery Island."
+        After travelling through the thick Jungle,"
+         you discover a dark cave hidden between enormous rocks.""",
+        "items": ["Lantern"]
     },
-    "lighthouse":{
-        "description": """After successfully crossing the Old Bridge, you follow a rocky mountain
-          path until you finally see an enormous lighthouse standing on the edge of the island.
-        The lighthouse is very old. Its white paint is peeling, its windows are broken, 
-        and its entrance is covered with dust and cobwebs.
-        You are excited because this is the place where the rescue boat is supposed to find you.
-        As you approach the lighthouse, you notice that its main door is locked. 
-        You must explore the building,
-        find useful equipment, and activate the lighthouse signal to attract the rescue boat.""",
-        "items": ["Lighthouse key", "a recscus signal", "Instruction notebook"],
-        "lighthouse dangers" : ["broken staircase", "electical", "locked control room", "power failure"],
-        "connections": ["oldbridge", "beach"]
+    "old-bridge": {
+        "id": 4,
+        "name": "old-bridge",
+        "info": "A rickety wooden bridge spanning a deep chasm."
+        "The Old Bridge is the fourth location on Mystery Island. After escaping the Cave, "
+        "you follow a narrow rocky path until you discover an old wooden bridge hanging over a deep valley.",
+        "items": ["metal hook","hammer","iron nails"]
     },
+    "light-house": {
+        "id": 5,
+        "name": "light-house",
+        "info": "An ancient lighthouse with an unlit beacon."
+        "The lighthouse is very old. Its white paint is peeling, its windows are broken, "
+        "and its entrance is covered with dust and cobwebs.",
+        "items": ["instruction notebook","lighthouse key"]
+    }
 }
-def main_menu():
-    print(f"""
-{"=" * 30}
- WELCOME TO MYSTERY_ISLAND
-{"=" * 30}
 
-1. Explore current location
-2. Travel to another location
-3. View inventory
-4. View island map
-5. View player status
-6. Quit adventure
+PLAYERS_STATUS = {}
+ISLAND_MAP = {}
+
+
+def reset_game_state(user_name: str = "Player"):
+    global PLAYERS_STATUS, ISLAND_MAP
+    ISLAND_MAP = copy.deepcopy(INITIAL_ISLAND_MAP)
+    PLAYERS_STATUS = {
+        "user_name": user_name,
+        "energy": 5,
+        "current_location": "beach",
+        "inventory": [],
+        "game_over": False,
+        "won": False
+    }
+
+
+def _validate_action() -> tuple[int, str]:
+    try:
+        raw_input = input("Select Action (1-5): ").strip()
+        users_choice = int(raw_input)
+        if users_choice not in range(1, 6):
+            raise ValueError("Choose a valid option between 1 and 5.")
+        return (users_choice, "")
+    except ValueError as err:
+        return (0, f"Error: {err}")
+    except Exception as err:
+        return (0, f"Unexpected Error: {err}")
+
+
+def validate_user_name() -> str:
+    while True:
+        user_name = input("Enter your username: ").strip()
+        if not user_name:
+            print("Enter a valid username.")
+            continue
+        return user_name
+
+
+def start_game():
+    print("=" * 40)
+    print("Welcome to The Lost Lighthouse!".center(40))
+    print("=" * 40)
+    print("""
+You have been stranded on a mysterious island after a shipwreck.
+Your mission is to explore the island, collect useful items, and find a way
+to signal a rescue boat.
+
+Rules of the Game
+-----------------
+1. Enter your name to begin your adventure.
+2. You start at the Beach with 5 energy points.
+3. Explore the five locations: Beach, Jungle, Cave, Old Bridge, and Lighthouse.
+4. Collect useful items and keep them in your inventory.
+5. You need a Rope to cross the Old Bridge.
+6. You need a Lantern to light the Lighthouse beacon.
+7. Each successful movement costs 1 energy point.
+8. Invalid movements do not consume energy.
+9. If your energy reaches zero before rescue, you lose.
+10. Light the lighthouse beacon to win the game.
 """)
-
-def explore_location(players_details):
-    current_loc = players_details["location"]
-    print(f"\n--- Exploring {current_loc.title()} ---")
-    print(ISLAND_MAP[current_loc]["description"])
-
-    if players_details["energy"] <= 0:
-        print("you are too tired to explore! Rest or travel to find a safe spot.")
-        return
-
-    players_details["energy"] -= 1
-
-    available_items = ISLAND_MAP[current_loc]["items"]
-    if available_items and random.random() > 0.3: 
-        found_item = random.choice(available_items)
-        players_details["inventory"].append(found_item)
-        print(f"🎉 You found a [{found_item}] and added it to your inventory!")
-    else:
-        print("You looked around but didn't find anything new.")
+    user_name = validate_user_name()
+    reset_game_state(user_name)
 
 
-def travel(players_details):
-    current_loc = players_details["location"]
-    possible_destinations = ISLAND_MAP[current_loc]["connections"]
-    
-    print(f"\nYou are currently at the {current_loc.title()}.")
-    print("Where would you like to travel?")
+def display_menu() -> int:
+    print(f"\n=========> {PLAYERS_STATUS.get('user_name', 'Unknown Player')} <=========")
+    print(f"Current Location : {PLAYERS_STATUS.get('current_location', '').title()}")
+    print(f"Remaining Energy : {PLAYERS_STATUS.get('energy', 0)}")
+    print(f"Inventory        : {', '.join(PLAYERS_STATUS.get('inventory', [])) or 'Empty'}")
+    print("-" * 43)
+    print("What would you like to do?")
+    print("1. Explore location")
+    print("2. Move to another location")
+    print("3. Check inventory")
+    print("4. Check energy")
+    print("5. Quit game")
 
-    for index, destination in enumerate(possible_destinations, 1):
-        print(f"{index}. {destination.title()}")
-    print(f"{len(possible_destinations) + 1}. Cancel and go back")
-    
-    choice = input("Enter the number of your destination: ").strip()
-    
-    # Process movement choice
-    if choice.isdigit():
-        choice_idx = int(choice) - 1
-        if 0 <= choice_idx < len(possible_destinations):
-            new_location = possible_destinations[choice_idx]
-            players_details["location"] = new_location
-            print(f"✈️ You traveled through the wilderness and arrived at the {new_location.title()}!")
-            
-            # Simple mechanic: traveling might restore or use energy, let's say it costs nothing for now
-        elif choice_idx == len(possible_destinations):
-            print("Travel canceled.")
-        else:
-            print("Invalid location choice.")
-    else:
-        print("Please enter a valid number.")
+    while True:
+        users_choice, err = _validate_action()
+        if err:
+            print(err)
+            continue
+        return users_choice
 
 
-def view_inventory(players_details):
-    print(f"\n--- {players_details["name"]}'s Inventory ---")
-    if not players_details["inventory"]:
-        print("Your inventory is empty.")
-    else:
-        for item in players_details["inventory"]:
-            print(f"- {item}")
+def explore() -> str:
+    loc_key = PLAYERS_STATUS['current_location']
+    loc_data = ISLAND_MAP[loc_key]
+    items = loc_data.get('items', [])
+    item_str = ", ".join(items) if items else "None"
+    return (
+        f"\n--- Exploring {loc_key.title()} ---\n"
+        f"{loc_data.get('info', '')}\n"
+        f"Items visible: {item_str}\n"
+    )
 
-def view_map(players_details):
-    print(f"\n--- Island Map ---")
-    for loc, info in ISLAND_MAP.items():
-        prefix = "📌 (You are here) " if loc == players_details["location"] else "📍 "
-        connections_str = ", ".join([c.title() for c in info["connections"]])
-        print(f"{prefix}{loc.title()}: Connects to -> {connections_str}")
 
-def view_status(players_details):
-    print(f"\n--- {players_details['name']}'s Status ---")
-    print(f"Energy  : {players_details['energy']} ⚡")
-    print(f"Location: {players_details['location'].title()} 📍")
-    print(f"Items   : {len(players_details['inventory'])} in backpack 🎒")
+def pick_up_item() -> str:
+    loc_key = PLAYERS_STATUS['current_location']
+    items = ISLAND_MAP[loc_key].get('items', [])
+    if not items:
+        return "There are no items to collect here."
+
+    collected = []
+    for item in list(items):
+        PLAYERS_STATUS['inventory'].append(item)
+        items.remove(item)
+        collected.append(item)
+
+    return f"You picked up: {', '.join(collected)}!"
+
+
+def list_locations() -> str:
+    full_list = "\nList of Moveable Locations:\n"
+    for location, details in ISLAND_MAP.items():
+        tag = " <current location>" if location == PLAYERS_STATUS["current_location"] else ""
+        full_list += f"{details['id']}. {location.title()}{tag}\n"
+    return full_list
+
+
+def move_player(location_id: int) -> str:
+    if PLAYERS_STATUS.get("game_over"):
+        return "The game is already over."
+
+    target_key = None
+    for loc_key, details in ISLAND_MAP.items():
+        if details["id"] == location_id:
+            target_key = loc_key
+            break
+
+    if not target_key:
+        return "Invalid location selection. Energy was not consumed."
+
+    if target_key == PLAYERS_STATUS["current_location"]:
+        return "You are already at this location. Energy was not consumed."
+
+    if target_key == "old-bridge" and "Rope" not in PLAYERS_STATUS["inventory"]:
+        return "You cannot cross the Old Bridge without a Rope! Energy was not consumed."
+
+    if target_key == "light-house" and "Lantern" not in PLAYERS_STATUS["inventory"]:
+        return "The path to the Lighthouse is too dark. You need a Lantern! Energy was not consumed."
+
+    PLAYERS_STATUS["current_location"] = target_key
+    PLAYERS_STATUS["energy"] -= 1
+
+    msg = f"You moved to {target_key.title()}. Energy remaining: {PLAYERS_STATUS['energy']}."
+
+    if target_key == "light-house" and "Lantern" in PLAYERS_STATUS["inventory"]:
+        PLAYERS_STATUS["won"] = True
+        PLAYERS_STATUS["game_over"] = True
+        msg += "\n\n*** VICTORY! You lit the lighthouse beacon and signaled a rescue boat! ***"
+        return msg
+
+    if PLAYERS_STATUS["energy"] <= 0:
+        PLAYERS_STATUS["game_over"] = True
+        msg += "\n\n*** GAME OVER! You ran out of energy before restoring the beacon. ***"
+
+    return msg
+
+
+def check_inventory() -> str:
+    inv = PLAYERS_STATUS.get("inventory", [])
+    if inv:
+        return f"\nInventory: {', '.join(inv)}"
+    return "\nYour inventory is empty."
+
+
+def check_energy() -> str:
+    return f"\nRemaining Energy: {PLAYERS_STATUS.get('energy', 0)} / 5"
